@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Strawberry's Member</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f8bbd0, #e1bee7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 30px;
+    }
+
+    .form-container {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 16px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 420px;
+      margin-bottom: 30px;
+    }
+
+    .form-container h2 {
+      margin-bottom: 20px;
+      color: #ad1457;
+      text-align: center;
+      font-size: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #6a1b9a;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ce93d8;
+      border-radius: 8px;
+      box-sizing: border-box;
+      background-color: #fce4ec;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    button {
+      width: 48%;
+      padding: 10px;
+      background: #ba68c8;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #ab47bc;
+    }
+
+    .card {
+      background: #fff;
+      border: 2px solid #ec407a;
+      border-radius: 12px;
+      padding: 20px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      color: #4a148c;
+      opacity: 0;
+      transform: scale(0.95);
+      animation: fadeInCard 0.6s ease-out forwards;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      font-size: 22px;
+      color: #ad1457;
+    }
+
+    .card p {
+      margin: 6px 0;
+    }
+
+    .treat {
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #fce4ec;
+      border-left: 4px solid #ec407a;
+      border-radius: 8px;
+      font-style: italic;
+    }
+
+    @keyframes fadeInCard {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Strawberry's Member</h2>
+    <form id="memberForm">
+      <div class="form-group">
+        <label for="nama">Nama </label>
+        <input type="text" id="nama" name="nama" placeholder="Contoh: Daniela">
+      </div>
+
+      <div class="form-group">
+        <label for="asal">Asal</label>
+        <input type="text" id="asal" name="asal" placeholder="Contoh: Spain">
+      </div>
+
+      <div class="form-group">
+        <label for="tipe">Jenis Keanggotaan</label>
+        <select id="tipe" name="tipe">
+          <option value="">-- Pilih --</option>
+          <option value="Classic">Classic</option>
+          <option value="Bronze">Bronze</option>
+          <option value="VIP">VIP</option>
+          <option value="VVIP">VVIP</option>
+        </select>
+      </div>
+
+      <div class="button-group">
+        <button type="submit">Kirim</button>
+        <button type="reset">Reset</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="memberCard"></div>
+
+  <script>
+    const form = document.getElementById('memberForm');
+    const cardContainer = document.getElementById('memberCard');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nama = document.getElementById('nama').value.trim();
+      const asal = document.getElementById('asal').value.trim();
+      const tipeRaw = document.getElementById('tipe').value.trim();
+      const tipe = tipeRaw.toLowerCase(); // fleksibel: bisa VIP, vip, VVIP, vvip
+
+      if (nama && asal && tipe) {
+        let treat = '';
+        if (tipe === 'VIP' || tipe === 'VVIP') {
+          treat = `<div class="treat">✨ Treat spesial: Anda akan diberikan segelas wine 🍷 dan dibawakan tas belanjaan Anda dengan penuh perhatian 👜.</div>`;
+        }
+
+        cardContainer.innerHTML = `
+          <div class="card">
+            <h3>Kartu Member Digital</h3>
+            <p><strong>Nama:</strong> ${nama}</p>
+            <p><strong>Asal:</strong> ${asal}</p>
+            <p><strong>Keanggotaan:</strong> ${tipeRaw.toUpperCase()}</p>
+            ${treat}
+          </div>
+        `;
+        form.reset();
+      }
+    });
+
+    form.addEventListener('reset', function() {
+      cardContainer.innerHTML = '';
+    });
+  </script>
+</body>
+</html>
